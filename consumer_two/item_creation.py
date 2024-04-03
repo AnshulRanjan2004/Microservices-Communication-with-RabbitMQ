@@ -1,12 +1,14 @@
-from fastapi import FastAPI
 
-app = FastAPI()
+def main():
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+    channel = connection.channel()
 
-@app.get("/create_item")
-async def createItem():
-    #we'll put get ,post requests here that will get send to rabbitmq to communicate with other services
-    return {"message": " item creation service is up and running!"}
+    channel.queue_declare(queue='create_item')
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8003)
+    def createItem(ch, method, properties, body):
+        print(f" [x] Received {body}")
+
+    channel.basic_consume(queue='create_item', on_message_callback=createItem, auto_ack=True)
+
+    print(' [*] Waiting for messages. To exit press CTRL+C')
+    channel.start_consuming()

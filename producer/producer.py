@@ -28,3 +28,7 @@ def get_products():
         }
         products.append(product_data)
     return jsonify({'data': products}), 200 if products else 204
+
+@app.route('/item_creation',methods=['POST'])
+def item_creation():
+    
