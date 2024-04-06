@@ -1,12 +1,14 @@
+from typing import Union
 from fastapi import FastAPI
 
 app = FastAPI()
 
-@app.get("/manage_stock")
-async def manage_stock():
-    #we'll put get ,post requests here that will get send to rabbitmq to communicate with other services
-    return {"message": "stock management service is up and running!"}
 
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8002)
+@app.get("/")
+def read_root():
+    return {"Hello": "World"}
+
+
+@app.get("/items/{item_id}")
+def read_item(item_id: int, q: Union[str, None] = None):
+    return {"item_id": item_id, "q": q}

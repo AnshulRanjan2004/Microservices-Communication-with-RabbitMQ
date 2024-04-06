@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  backend:
+    build:
+      context: ./consumer_three
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/consumer_three
