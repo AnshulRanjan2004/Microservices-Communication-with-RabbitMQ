@@ -1,9 +1,9 @@
 FROM python:3.9
 ENV PYTHONBUFFERED 1
-WORKDIR /producer
-COPY ./requirements.txt /producer/requirements.txt
-RUN pip install --no-cache-dir --upgrade -r /producer/requirements.txt
+WORKDIR /producerdock
+COPY ./requirements.txt /producerdock/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r /producerdock/requirements.txt
 
-COPY . /producer/
+COPY ./producer.py /producerdock/
 
 CMD python producer.py
