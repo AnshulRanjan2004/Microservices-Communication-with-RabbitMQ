@@ -129,6 +129,7 @@ env.bak/
 venv.bak/
 
 .dbdata/
+.rabbitmqdata/
 
 # Spyder project settings
 .spyderproject
