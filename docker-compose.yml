@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 services:
   rabbitmq:
     image: rabbitmq:3-management
@@ -19,6 +19,18 @@ services:
       - "8000:8000"
     volumes:
       - .:/stockmanager
+    depends_on:
+      - db
+      - rabbitmq
+  
+  consumertwo:
+    build:
+      context: ./consumer_two
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8002"
+    volumes:
+      - .:/itemcreation
     depends_on:
       - db
       - rabbitmq
