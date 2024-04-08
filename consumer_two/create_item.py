@@ -26,7 +26,7 @@ class InventoryItem(Base):
 Base.metadata.create_all(bind=engine)
 
 @app.post("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
+def create_item(item_id: int, q: Union[str, None] = None):
     db = SessionLocal()
     item = db.query(InventoryItem).filter(InventoryItem.item_id == item_id).first()
     db.close()
