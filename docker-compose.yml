@@ -22,6 +22,18 @@ services:
     depends_on:
       - db
       - rabbitmq
+  
+  consumertwo:
+    build:
+      context: ./consumer_two
+      dockerfile: Dockerfile
+    ports:
+      - "8002:8002"
+    volumes:
+      - .:/itemcreation
+    depends_on:
+      - db
+      - rabbitmq
 
   producer:
     build:
