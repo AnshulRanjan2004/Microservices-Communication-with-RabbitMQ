@@ -6,4 +6,4 @@ RUN pip install --no-cache-dir --upgrade -r /producerdock/requirements.txt
 
 COPY ./producer.py /producerdock/
 
-CMD python producer.py
+CMD ["uvicorn", "producer:app", "--host", "0.0.0.0", "--port", "8000"]

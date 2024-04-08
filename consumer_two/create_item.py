@@ -1,17 +1,16 @@
-from typing import Union
-from fastapi import FastAPI, HTTPException
+import pika, json
 from sqlalchemy import create_engine, Column, Integer, String, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-app = FastAPI()
-
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:root@db:3306/inventory"
+params = pika.URLParameters('')
+connection = pika.BlockingConnection(params)
+channel = connection.channel()
+channel.queue_declare(queue='items')
+SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:root@db/inventory"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
-
-
 class InventoryItem(Base):
     __tablename__ = "inventory_items"
 
@@ -22,14 +21,45 @@ class InventoryItem(Base):
     quantity = Column(Integer)
     category = Column(String(50))
 
+Base = declarative_base()
 
-Base.metadata.create_all(bind=engine)
+def callback(ch, method, properties, body):
+    item_data = json.loads(body)
 
-@app.post("/items/{item_id}")
-def create_item(item_id: int, q: Union[str, None] = None):
+    # Create a new database session
     db = SessionLocal()
-    item = db.query(InventoryItem).filter(InventoryItem.item_id == item_id).first()
-    db.close()
-    if item is None:
-        raise HTTPException(status_code=404, detail="Item not found")
-    return {"item_id": item.item_id, "name": item.name, "description": item.description, "price": item.price, "quantity": item.quantity, "category": item.category}
+
+    try:
+        # Create a new item object
+        new_item = InventoryItem(
+            name=item_data['name'],
+            description=item_data['description'],
+            price=item_data['price'],
+            quantity=item_data['quantity'],
+            category=item_data['category']
+        )
+
+        # Add the item to the session
+        db.add(new_item)
+
+        # Commit the transaction
+        db.commit()
+
+    except Exception as e:
+        # Rollback the transaction in case of an error
+        db.rollback()
+        print(f"Error: {e}")
+
+    finally:
+        # Close the session
+        db.close()
+
+
+
+channel.basic_consume(queue='createItem', on_message_callback=callback, auto_ack=True)
+
+print('Started Consuming Create Item')
+
+channel.start_consuming()
+
+channel.close()
