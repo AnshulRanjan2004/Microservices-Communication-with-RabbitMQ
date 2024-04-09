@@ -3,7 +3,7 @@ from sqlalchemy import create_engine, Column, Integer, String, Float
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-params = pika.URLParameters('')
+params = pika.URLParameters('amqp://user:pass@localhost:5672/%2f')
 connection = pika.BlockingConnection(params)
 channel = connection.channel()
 channel.queue_declare(queue='items')
