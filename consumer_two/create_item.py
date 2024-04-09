@@ -1,12 +1,16 @@
 import pika, json
 from sqlalchemy import create_engine, Column, Integer, String, Float
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
 
-params = pika.URLParameters('amqp://user:pass@localhost:5672/%2f')
-connection = pika.BlockingConnection(params)
+from sqlalchemy.orm import sessionmaker,declarative_base
+
+credentials = pika.PlainCredentials('user', 'pass')
+parameters = pika.ConnectionParameters('localhost', 5672, '/', credentials)
+
+# params = pika.URLParameters('amqp://user:pass@localhost:5672/%2f')
+connection = pika.BlockingConnection(parameters)
 channel = connection.channel()
-channel.queue_declare(queue='items')
+channel.queue_declare(queue='createItem')
+
 SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:root@db:3306/inventory"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
