@@ -7,7 +7,7 @@ params = pika.URLParameters('')
 connection = pika.BlockingConnection(params)
 channel = connection.channel()
 channel.queue_declare(queue='items')
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:root@db/inventory"
+SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:root@db:3306/inventory"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
