@@ -1,4 +1,4 @@
--- Active: 1712417447158@@localhost@33066@inventory
+-- Active: 1712727747350@@127.0.0.1@33066@inventory
 
 CREATE TABLE inventory_items (
     item_id INT AUTO_INCREMENT PRIMARY KEY,

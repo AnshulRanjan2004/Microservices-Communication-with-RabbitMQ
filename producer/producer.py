@@ -7,23 +7,22 @@ parameters = pika.ConnectionParameters('localhost', 5672, '/', credentials)
 connection = pika.BlockingConnection(parameters)
 channel = connection.channel()
 channel.queue_declare(queue='createItem')
-def publish(method, body):
-    properties = pika.BasicProperties(method)
-    channel.basic_publish(exchange='', routing_key='admin', body=json.dumps(body), properties=properties)
+def publish(body):
+    
+    channel.basic_publish(exchange='', routing_key='admin', body=json.dumps(body))
 
 app = Flask(__name__)
 
 @app.post("/createitem")
 def createItem(): 
     item_data = {
-        "name": "Sample Item",
-        "description": "This is a sample item",
-        "price": 9.99,
-        "quantity": 100,
+        "name": "Sample Item2",
+        "description": "This is a sample item 1",
+        "price": 10,
+        "quantity": 0,
         "category": "Sample Category"
     }
-    
-    #channel.basic_publish(exchange='', routing_key='items_queue', body=message_body)
+    publish(item_data)
     return {"message":"item created"}
 
 @app.route('/')

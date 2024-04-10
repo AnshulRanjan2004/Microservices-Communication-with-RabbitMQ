@@ -7,9 +7,9 @@ credentials = pika.PlainCredentials('user', 'pass')
 parameters = pika.ConnectionParameters('localhost', 5672, '/', credentials)
 
 # params = pika.URLParameters('amqp://user:pass@localhost:5672/%2f')
-connection = pika.BlockingConnection(parameters)
-channel = connection.channel()
-channel.queue_declare(queue='createItem')
+# connection = pika.BlockingConnection(parameters)
+# channel = connection.channel()
+# channel.queue_declare(queue='createItem')
 
 SQLALCHEMY_DATABASE_URL = "mysql+pymysql://root:root@db:3306/inventory"
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
@@ -27,9 +27,9 @@ class InventoryItem(Base):
 
 Base = declarative_base()
 
-def callback(ch, method, properties, body):
+def callback(body):
     item_data = json.loads(body)
-
+    print(item_data)
     # Create a new database session
     db = SessionLocal()
 
@@ -46,8 +46,10 @@ def callback(ch, method, properties, body):
         # Add the item to the session
         db.add(new_item)
 
+
         # Commit the transaction
         db.commit()
+        print("item added")
 
     except Exception as e:
         # Rollback the transaction in case of an error
@@ -60,10 +62,17 @@ def callback(ch, method, properties, body):
 
 
 
-channel.basic_consume(queue='createItem', on_message_callback=callback, auto_ack=True)
 
-print('Started Consuming Create Item')
+item_data = {
+        "name": "Sample Item2",
+        "description": "This is a sample item 1",
+        "price": 10,
+        "quantity": 0,
+        "category": "Sample Category"
+    }
+callback(item_data)
+# print('Started Consuming Create Item')
 
-channel.start_consuming()
+# channel.start_consuming()
 
-channel.close()
+# channel.close()
