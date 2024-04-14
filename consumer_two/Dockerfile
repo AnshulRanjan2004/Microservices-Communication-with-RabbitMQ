@@ -1,9 +1,8 @@
-FROM python:3.9
-ENV PYTHONBUFFERED 1
-WORKDIR /createItem
-COPY ./requirements.txt /createItem/requirements.txt
-RUN pip install --no-cache-dir --upgrade -r /createItem/requirements.txt
+FROM python:3.9-slim-buster
 
-COPY ./create_item.py /createItem/
+WORKDIR /app
 
-CMD python create_item.py
+COPY . .
+RUN pip3 install -r requirements.txt
+
+CMD ["python3", "insertion.py"]

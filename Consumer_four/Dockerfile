@@ -5,4 +5,4 @@ WORKDIR /app
 COPY . .
 RUN pip3 install -r requirements.txt
 
-CMD ["python3", "deletion.py"]
+CMD ["python3", "read_database.py"]
