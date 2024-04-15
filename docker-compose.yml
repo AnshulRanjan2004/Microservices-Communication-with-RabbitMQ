@@ -31,8 +31,8 @@ services:
     ports:
       - "27017:27017"
     restart: always
-    logging:
-      driver: none
+    #logging:
+    #  driver: none
     # command: mongod --auth
     # environment:
     #   MONGO_INITDB_ROOT_USERNAME: user
