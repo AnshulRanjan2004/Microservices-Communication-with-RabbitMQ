@@ -21,16 +21,17 @@ channel.queue_declare(queue='insert_record', durable=True)
 # Define a callback function to handle incoming messages
 def callback(ch, method, properties, body):
     # Parse incoming message
-    body = body.decode()
-    body = json.loads(body)
-    # message = json.loads(body)
+    # body = body.decode()
+    # body = json.loads(body)
+    # # message = json.loads(body)
 
-    record = {
-        "name": body['name'],
-        "srn": body['srn'],
-        "section": body['section'],
-    }
-    collection.insert_one(record)
+    # record = {
+    #     "name": body['name'],
+    #     "srn": body['srn'],
+    #     "section": body['section'],
+    # }
+    # collection.insert_one(record)
+    print(body)
 
     # Acknowledge the message
     ch.basic_ack(delivery_tag=method.delivery_tag)
