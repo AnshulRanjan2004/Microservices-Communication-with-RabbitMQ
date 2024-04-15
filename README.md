@@ -22,6 +22,7 @@ Building and deploying a microservices architecture where multiple components co
 
 ## Flow Diagram 
 
+![alt text](https://github.com/rahulmallya/MicroService-Communication-with-RabbitMQ/blob/main/image.png)
 
 ## File Structure 
 

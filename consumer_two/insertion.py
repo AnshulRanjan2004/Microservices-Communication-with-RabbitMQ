@@ -23,7 +23,7 @@ def callback(ch, method, properties, body):
     # Parse incoming message
     body = body.decode()
     body = json.loads(body)
-    message = json.loads(body)
+    # message = json.loads(body)
 
     record = {
         "name": body['name'],
@@ -31,7 +31,6 @@ def callback(ch, method, properties, body):
         "section": body['section'],
     }
     collection.insert_one(record)
-    print(body)
 
     # Acknowledge the message
     ch.basic_ack(delivery_tag=method.delivery_tag)
