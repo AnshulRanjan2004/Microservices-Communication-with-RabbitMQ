@@ -20,10 +20,6 @@ RabbitMQ is a message-queueing software also known as a message broker or queue 
 
 Building and deploying a microservices architecture where multiple components communicate with each other using RabbitMQ. A message broker is an architectural pattern for message validation, transformation and routing. For the scope of this project, we will build 4 microservices: A HTTP server that handles incoming requests to perform CRUD operations on a Student Management Database + Check the health of the RabbitMQ connection, a microservice that acts as the health check endpoint, a microservice that inserts a single student record, a microservice that retrieves student records, a microservice that deletes a student record given the SRN.
 
-## Flow Diagram 
-
-![alt text](https://github.com/rahulmallya/MicroService-Communication-with-RabbitMQ/blob/main/image.png)
-
 ## File Structure 
 
 ```bash
@@ -121,14 +117,3 @@ Hint: The docker-compose file which spins up the producer and consumers ensures 
     - Send a GET request to the server with the appropriate path 
     - Check the content of the DB
   - To end the process, use the command “docker-compose down”
-
-## Explore more!
-
-- https://www.linode.com/docs/guides/deploying-microservices-with-docker/
-- https://www.cloudamqp.com/blog/part4-rabbitmq-for-beginners-exchanges-routing-keys-bindings.html
-- https://www.meritdata-tech.com/resources/whitepaper/digital-engineering-solutions/microservices-architecture-docker-kubernetes/
-- https://www.freecodecamp.org/news/docker-development-workflow-a-guide-with-flask-and-postgres-db1a1843044a/
-- https://www.educative.io/blog/mongodb-with-docker
-
-
-# MicroService-Communication-with-RabbitMQ.
