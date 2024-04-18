@@ -11,9 +11,10 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th>Product ID</th>
                     <th>Name</th>
-                    <th>SRN</th>
-                    <th>Section</th>
+                    <th>Price</th>
+                    <th>Seller Name</th>
                 </tr>
             </thead>
             <tbody id="records-table-body">
@@ -37,13 +38,15 @@
                         var tr = document.createElement('tr');
                         var record = data[i];
                         var td1 = document.createElement('td');
-                        td1.textContent = record.name;
+                        td1.textContent = record.product_id;
                         tr.appendChild(td1);
                         var td2 = document.createElement('td');
-                        td2.textContent = record.srn;
+                        td2.textContent = record.name;
                         tr.appendChild(td2);
                         var td3 = document.createElement('td');
-                        td3.textContent = record.section;
+                        td3.textContent = record.price;
+                        tr.appendChild(td3);
+                        td3.textContent = record.seller_name;
                         tr.appendChild(td3);
                         document.getElementById('records-table-body').appendChild(tr);
                     }
