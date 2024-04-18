@@ -26,9 +26,10 @@ def callback(ch, method, properties, body):
     # message = json.loads(body)
 
     record = {
+        "product_id": body['product_id'],
         "name": body['name'],
-        "srn": body['srn'],
-        "section": body['section'],
+        "price": body['price'],
+        "seller_name": body['seller_name'],
     }
     collection.insert_one(record)
 
