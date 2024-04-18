@@ -66,10 +66,11 @@ def insert_record():
 # Insert record endpoint
 @app.route('/insert_record_actually', methods=['POST'])
 def insert_record_actually():
+    product_id = request.form['product_id']
     name = request.form['name']
-    srn = request.form['srn']
-    section = request.form['section']
-    message = json.dumps({'name': name, 'srn': srn, 'section': section})
+    price = request.form['price']
+    seller_name = request.form['seller_name']
+    message = json.dumps({'Product_ID': product_id, 'Name': name, 'price': price, 'seller_name': seller_name})
     logging.info(message)
     # Publish message to insert_record queue
     channel.basic_publish(exchange='microservices', routing_key='insert_record', body=message)
