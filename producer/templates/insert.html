@@ -10,16 +10,20 @@
 		<h1>Add a New Record</h1>
 		<form action="{{ url_for('insert_record_actually') }}" id="insert-form" enctype="multipart/form-data" method="post">
 			<div class="form-group">
+				<label for="product_id">Product ID:</label>
+				<input type="text" class="form-control" id="product_id" name="product_id" required>
+			</div>
+			<div class="form-group">
 				<label for="name">Name:</label>
 				<input type="text" class="form-control" id="name" name="name" required>
 			</div>
 			<div class="form-group">
-				<label for="srn">SRN:</label>
-				<input type="text" class="form-control" id="srn" name="srn" required>
+				<label for="price">Price:</label>
+				<input type="text" class="form-control" id="price" name="price" required>
 			</div>
 			<div class="form-group">
-				<label for="section">Section:</label>
-				<input type="text" class="form-control" id="section" name="section" required>
+				<label for="seller_name">Seller Name:</label>
+				<input type="text" class="form-control" id="seller_name" name="seller_name" required>
 			</div>
 			<button type="submit" class="btn btn-primary">Submit</button>
 		</form>
