@@ -19,8 +19,8 @@ channel.queue_declare(queue='delete_record', durable=True)
 # Define callback function
 def callback(ch, method, properties, body):
     ch.basic_ack(delivery_tag=method.delivery_tag)
-    srn = body.decode()
-    collection.delete_one({'srn': srn})
+    product_id = body.decode()
+    collection.delete_one({'product_id': product_id})
 
 # Start consuming from the queue
 channel.basic_consume(queue='delete_record', on_message_callback=callback)
