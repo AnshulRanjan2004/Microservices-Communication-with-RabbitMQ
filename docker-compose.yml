@@ -5,8 +5,8 @@ volumes:
 
 networks:
   resolute:
-    external:
-      name: resolute
+    name: resolute
+    external: true
 
 services:
   rabbitmq:
@@ -24,7 +24,13 @@ services:
       - resolute
 
   mongodb:
-    image: mongo
+    image: mongo:latest
+    hostname: mongo_test
+    command: mongod --auth
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: pass
+      MONGO_INITDB_DATABASE: database
     ports:
       - "27017:27017"
     restart: always
@@ -55,6 +61,9 @@ services:
       - RABBITMQ_PASSWORD=guest
     networks:
       - resolute
+    links:
+      - mongodb
+      - rabbitmq
 
   consumer_health_check:
     build: Consumer_one/
@@ -65,6 +74,9 @@ services:
         condition: service_healthy
     networks:
       - resolute
+    links:
+      - mongodb
+      - rabbitmq
 
   consumer_insert_record:
     build: Consumer_two/
@@ -75,6 +87,9 @@ services:
         condition: service_healthy
     networks:
       - resolute
+    links:
+      - mongodb
+      - rabbitmq
 
   consumer_delete_record:
     build: Consumer_three/
@@ -85,6 +100,9 @@ services:
         condition: service_healthy
     networks:
       - resolute
+    links:
+      - mongodb
+      - rabbitmq
 
   consumer_read_database:
     build: Consumer_four/
@@ -95,3 +113,6 @@ services:
         condition: service_healthy
     networks:
       - resolute
+    links:
+      - mongodb
+      - rabbitmq

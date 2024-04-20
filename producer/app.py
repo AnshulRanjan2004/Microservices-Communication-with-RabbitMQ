@@ -70,7 +70,7 @@ def insert_record_actually():
     name = request.form['name']
     price = request.form['price']
     seller_name = request.form['seller_name']
-    message = json.dumps({'Product_ID': product_id, 'Name': name, 'price': price, 'seller_name': seller_name})
+    message = json.dumps({'product_id': product_id, 'name': name, 'price': price, 'seller_name': seller_name})
     logging.info(message)
     # Publish message to insert_record queue
     channel.basic_publish(exchange='microservices', routing_key='insert_record', body=message)
@@ -84,8 +84,8 @@ def delete_record():
 
 @app.route('/delete_record_actually', methods=['POST'])
 def delete_record_actually():
-    srn = request.form['srn']
-    message = srn
+    product_id = request.form['product_id']
+    message = product_id
     logging.info(message)
     # Publish message to delete_record queue
     channel.basic_publish(exchange='microservices', routing_key='delete_record', body=message)

@@ -1,5 +1,8 @@
 import pika
 import pymongo
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 # RabbitMQ setup
 credentials = pika.PlainCredentials(username='guest', password='guest')
@@ -9,9 +12,9 @@ channel = connection.channel()
 
 
 # Connect to MongoDB
-client = pymongo.MongoClient("mongodb://mongodb:27017/")
-db = client["database"]
-collection = db["ccdb"]
+client = pymongo.MongoClient(host="mongo_test", port=27017, username="user", password="pass", authSource="admin")
+db = client.stockmanagement
+collection = db.ccdb
 
 # Declare the "read_database" queue
 channel.queue_declare(
@@ -28,8 +31,8 @@ def callback(ch, method, properties, body):
     records = collection.find()
     
     # Send each record to the producer through RabbitMQ
-    # channel.basic_publish(exchange='microservices', routing_key='send_database', body=str(records))
-    channel.basic_publish(exchange='microservices', routing_key='send_database', body="TEST")
+    channel.basic_publish(exchange='microservices', routing_key='send_database', body=str(records))
+    #channel.basic_publish(exchange='microservices', routing_key='send_database', body="TEST")
 
     # Acknowledge that the message has been processed
     channel.basic_ack(delivery_tag=method.delivery_tag)

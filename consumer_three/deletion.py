@@ -3,9 +3,9 @@ import json
 import pymongo
 
 # Connect to MongoDB
-client = pymongo.MongoClient("mongodb://mongodb:27017/")
-db = client["database"]
-collection = db["ccdb"]
+client = pymongo.MongoClient(host="mongo_test", port=27017, username="user", password="pass", authSource="admin")
+db = client.stockmanagement
+collection = db.ccdb
 
 # RabbitMQ Connection
 credentials = pika.PlainCredentials(username='guest', password='guest')
