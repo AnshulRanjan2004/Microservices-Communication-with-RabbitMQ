@@ -1,8 +1,11 @@
-FROM python:3.9-slim-buster
+FROM python:3.8-slim-buster
 
-WORKDIR /app
+WORKDIR /application
 
-COPY . .
+COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
-CMD ["python3", "health_check.py"]
+COPY consumer1.py consumer1.py
+
+CMD ["python3", "consumer1.py"]
+
