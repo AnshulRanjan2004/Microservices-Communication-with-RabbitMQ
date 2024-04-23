@@ -1,118 +1,67 @@
-version: "3.8"
-
-volumes:
-  mongodata:
-
-networks:
-  resolute:
-    name: resolute
-    external: true
+version: '3'
 
 services:
-  rabbitmq:
-    image: rabbitmq:3-management
-    hostname: rabbitmq
-    ports:
-      - "15672:15672" # For RabbitMQ management interface
-      - "5672:5672" # For RabbitMQ message broker
-    healthcheck:
-      test: rabbitmq-diagnostics check_port_connectivity
-      interval: 30s
-      timeout: 30s
-      retries: 3
-    networks:
-      - resolute
-
-  mongodb:
-    image: mongo:latest
-    hostname: mongo_test
-    command: mongod --auth
-    environment:
-      MONGO_INITDB_ROOT_USERNAME: user
-      MONGO_INITDB_ROOT_PASSWORD: pass
-      MONGO_INITDB_DATABASE: database
-    ports:
-      - "27017:27017"
-    restart: always
-    logging:
-      driver: none
-    volumes:
-      - mongodata:/data/db
-    healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongo mongo:27017/test --quiet
-      interval: 10s
-      timeout: 10s
-      retries: 5
-      start_period: 40s
-    networks:
-      - resolute
-
   producer:
-    build: Producer/
+    build:
+      context: ./producer
+      dockerfile: Dockerfile
+    container_name: producer
     ports:
-      - "5000:5000" # For Flask server
-    depends_on:
-      rabbitmq:
-        condition: service_healthy
+      - "5000:5000"
+    networks:
+      - app_network
     environment:
-      - RABBITMQ_HOST=rabbitmq
-      - RABBITMQ_PORT=5672
-      - RABBITMQ_USERNAME=guest
-      - RABBITMQ_PASSWORD=guest
-    networks:
-      - resolute
-    links:
-      - mongodb
-      - rabbitmq
+      - SOURCE_IP=192.168.56.1
 
-  consumer_health_check:
-    build: Consumer_one/
-    depends_on:
-      producer:
-        condition: service_started
-      rabbitmq:
-        condition: service_healthy
+  consumer1:
+    build:
+      context: ./consumer1
+      dockerfile: Dockerfile
+    container_name: consumer1
     networks:
-      - resolute
-    links:
-      - mongodb
-      - rabbitmq
+      - app_network
+    environment:
+      - SOURCE_IP=192.168.56.1
+    
+  consumer2:
+    build:
+      context: ./consumer2
+      dockerfile: Dockerfile
+    container_name: consumer2
+    networks:
+      - app_network
+    environment:
+      - SOURCE_IP=192.168.56.1
+    
+  consumer3:
+    build:
+      context: ./consumer3
+      dockerfile: Dockerfile
+    container_name: consumer3
+    networks:
+      - app_network
+    environment:
+      - SOURCE_IP=192.168.56.1
 
-  consumer_insert_record:
-    build: Consumer_two/
-    depends_on:
-      producer:
-        condition: service_started
-      rabbitmq:
-        condition: service_healthy
+  consumer4:
+    build:
+      context: ./consumer4
+      dockerfile: Dockerfile
+    container_name: consumer4
     networks:
-      - resolute
-    links:
-      - mongodb
-      - rabbitmq
+      - app_network
+    environment:
+      - SOURCE_IP=192.168.56.1
 
-  consumer_delete_record:
-    build: Consumer_three/
-    depends_on:
-      producer:
-        condition: service_started
-      rabbitmq:
-        condition: service_healthy
+  alpine:
+    image: alpine:latest
+    container_name: alpine_container
+    tty: true
     networks:
-      - resolute
-    links:
-      - mongodb
-      - rabbitmq
+      - app_network
+    environment:
+      - SOURCE_IP=192.168.56.1
 
-  consumer_read_database:
-    build: Consumer_four/
-    depends_on:
-      producer:
-        condition: service_started
-      rabbitmq:
-        condition: service_healthy
-    networks:
-      - resolute
-    links:
-      - mongodb
-      - rabbitmq
+networks:
+  app_network:
+    external: true
