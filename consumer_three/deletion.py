@@ -1,30 +1,37 @@
 import pika
+import mysql.connector
 import json
-import pymongo
+import os
 
-# Connect to MongoDB
-client = pymongo.MongoClient(host="mongo_test", port=27017, username="user", password="pass", authSource="admin")
-db = client.stockmanagement
-collection = db.ccdb
+source_ip = os.getenv('SOURCE_IP')
 
-# RabbitMQ Connection
-credentials = pika.PlainCredentials(username='guest', password='guest')
-parameters = pika.ConnectionParameters(host='rabbitmq', port=5672, credentials=credentials)
-connection = pika.BlockingConnection(parameters=parameters)
+credentials = pika.PlainCredentials('guest', 'guest')
+connection = pika.BlockingConnection(pika.ConnectionParameters(source_ip, 5672, '/', credentials))
+
 channel = connection.channel()
+channel.exchange_declare(exchange='deletion', exchange_type='direct')
+channel.queue_declare(queue='deletion_queue')
+channel.queue_bind(exchange='deletion', queue='deletion_queue')
 
-# Declare the queue
-channel.queue_declare(queue='delete_record', durable=True)
+mydb = mysql.connector.connect(
+    host="mysql_container",
+    user="root",
+    database="student_project",
+    password="2002"
+)
+c = mydb.cursor()
 
-# Define callback function
 def callback(ch, method, properties, body):
+    print("Received message for deleting record: {}".format(body))
+    item_id = body.decode()
+    # delete the record from the database
+    c.execute("DELETE FROM INVENTORY_MANAGEMENT WHERE item_id=%s", (item_id,))
+    mydb.commit()
+    # acknowledge that the message has been received
     ch.basic_ack(delivery_tag=method.delivery_tag)
-    product_id = body.decode()
-    collection.delete_one({'product_id': product_id})
 
-# Start consuming from the queue
-channel.basic_consume(queue='delete_record', on_message_callback=callback)
-
-# Wait for messages
-print(' [*] Waiting for messages. To exit press CTRL+C')
+channel.basic_consume(queue='deletion_queue', on_message_callback=callback)
 channel.start_consuming()
+
+
+
