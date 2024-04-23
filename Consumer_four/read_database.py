@@ -1,45 +1,42 @@
 import pika
-import pymongo
-import logging
+import mysql.connector
+import json
+import os
 
-logging.basicConfig(level=logging.INFO)
+source_ip = os.getenv('SOURCE_IP')
 
-# RabbitMQ setup
-credentials = pika.PlainCredentials(username='guest', password='guest')
-parameters = pika.ConnectionParameters(host='rabbitmq', port=5672, credentials=credentials)
-connection = pika.BlockingConnection(parameters=parameters)
+credentials = pika.PlainCredentials('guest', 'guest')
+connection = pika.BlockingConnection(pika.ConnectionParameters(source_ip, 5672, '/', credentials))
+
 channel = connection.channel()
+channel.exchange_declare(exchange='read', exchange_type='direct')
+channel.queue_declare(queue='read_queue')
+channel.queue_bind(exchange='read', queue='read_queue')
+
+channel.exchange_declare(exchange='read_response', exchange_type='direct')
+channel.queue_declare(queue='read_queue_response')
+channel.queue_bind(exchange='read_response', queue='read_queue_response')
 
 
-# Connect to MongoDB
-client = pymongo.MongoClient(host="mongo_test", port=27017, username="user", password="pass", authSource="admin")
-db = client.stockmanagement
-collection = db.ccdb
-
-# Declare the "read_database" queue
-channel.queue_declare(
-    queue='read_database',
-    durable=True
+mydb = mysql.connector.connect(
+    host="mysql_container",
+    user="root",
+    database="student_project",
+    password="2002"
 )
-
-channel.queue_declare(queue='send_database', durable=True)
-channel.queue_bind(exchange='microservices', queue='send_database', routing_key='send_database')
-
-# Define the callback function to process incoming messages
 def callback(ch, method, properties, body):
-    # Retrieve all records from the database
-    records = collection.find()
-    
-    # Send each record to the producer through RabbitMQ
-    channel.basic_publish(exchange='microservices', routing_key='send_database', body=str(records))
-    #channel.basic_publish(exchange='microservices', routing_key='send_database', body="TEST")
+    print("Received message for reading record.")
+    c = mydb.cursor()
+    c.execute("SELECT * FROM INVENTORY_MANAGEMENT")
+    records = c.fetchall()
+    print(json.dumps(records))
+    mydb.commit()
+    ch.basic_publish(exchange='read_response', routing_key='read_queue_response', body=json.dumps(records))
+    # acknowledge that the message has been received
+    ch.basic_ack(delivery_tag=method.delivery_tag)
 
-    # Acknowledge that the message has been processed
-    channel.basic_ack(delivery_tag=method.delivery_tag)
 
-# Consume messages from the "read_database" queue
-channel.basic_consume(queue='read_database', on_message_callback=callback)
+channel.basic_consume(queue='read_queue', on_message_callback=callback)
+print('Waiting for messages.')
 
-# Start consuming messages
-print('Waiting for messages...')
 channel.start_consuming()
