@@ -24,7 +24,7 @@ mydb = mysql.connector.connect(
 def callback(ch, method, properties, body):
     print("Received message for reading record.")
     c = mydb.cursor()
-    c.execute("SELECT * FROM STUDENTS_DETAILS")
+    c.execute("SELECT * FROM STOCK_ITEMS")
     records = c.fetchall()
     print(json.dumps(records))
     mydb.commit()

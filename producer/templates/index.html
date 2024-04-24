@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Student Management System</title>
+		<title>Stock Management System</title>
 		<style>
 		html, body {
 			height: 100%;
@@ -112,30 +112,32 @@
 				  </style>
 	</head>
 <body>
-	<h1>Student Management System</h1>
-	<h2>Add New Student</h2>
+	<h1>Stock Management System</h1>
+	<h2>Add New Product</h2>
 	<form method="GET" action="http://localhost:5000/insert_record">
-		<label for="name">Name:</label><br>
+		<label for="id">Product ID:</label><br>
+		<input type="text" id="id" name="id" required><br>
+		<label for="name">Product Name:</label><br>
 		<input type="text" id="name" name="name" required><br>
-		<label for="srn">SRN:</label><br>
-		<input type="text" id="srn" name="srn" required><br>
-		<label for="section">Section:</label><br>
-		<input type="text" id="section" name="section" required><br>
+		<label for="quantity">Product Quantity:</label><br>
+		<input type="text" id="quantity" name="quantity" required><br>
+		<label for="price">Product Price:</label><br>
+		<input type="text" id="price" name="price" required><br>
 		<br>
 		<input type="submit" value="Submit">
 	</form>
-	<h2>Delete Student</h2>
+	<h2>Delete Product</h2>
 	<form method="GET" action="http://localhost:5000/delete_record">
-		<label for="srn">SRN:</label><br>
-		<input type="text" id="srn" name="srn" required><br>
+		<label for="id">Product ID:</label><br>
+		<input type="text" id="id" name="id" required><br>
 		<br>
 		<input type="submit" value="Delete">
 	</form>
-	<h2>View All Students</h2>
+	<h2>View All Products</h2>
 	<form method="GET" action="http://localhost:5000/read_data">
 		<input type="submit" value="View All Students">
 	</form>
-    <h2>Check health of connection</h2>
+    <h2>Check Health of Connections</h2>
 	<form method="GET" action="http://localhost:5000/health_check">
         <input type="text" id="message" name="message" required><br>
 		<input type="submit" value="Check health">

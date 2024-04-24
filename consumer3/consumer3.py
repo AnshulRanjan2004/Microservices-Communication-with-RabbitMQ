@@ -20,9 +20,9 @@ c = mydb.cursor()
 
 def callback(ch, method, properties, body):
     print("Received message for deleting record: {}".format(body))
-    srn = body.decode()
+    id = body.decode()
     # delete the record from the database
-    c.execute("DELETE FROM STUDENTS_DETAILS WHERE srn=%s", (srn,))
+    c.execute("DELETE FROM STOCK_ITEMS WHERE ProductID = %s", (id,))
     mydb.commit()
     # acknowledge that the message has been received
     ch.basic_ack(delivery_tag=method.delivery_tag)

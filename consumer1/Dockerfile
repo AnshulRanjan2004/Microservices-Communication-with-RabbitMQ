@@ -6,6 +6,7 @@ COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
 COPY consumer1.py consumer1.py
+ENV PYTHONUNBUFFERED=1
 
 CMD ["python3", "consumer1.py"]
 

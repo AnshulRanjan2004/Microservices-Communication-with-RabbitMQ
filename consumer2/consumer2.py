@@ -22,7 +22,7 @@ def callback(ch, method, properties, body):
     data = json.loads(body)
     print("Received message for inserting record: {}".format(data))
     # insert the record into the database
-    c.execute("INSERT INTO STUDENTS_DETAILS (name, srn, section) VALUES (%s, %s, %s)", (data["name"], data["srn"], data["section"]))
+    c.execute("INSERT INTO STOCK_ITEMS (ProductID, ProductName, Quantity, UnitPrice) VALUES (%s, %s, %s, %s)", (data["id"], data["name"], data["quantity"], data["price"]))
     mydb.commit()
     # acknowledge that the message has been received
     ch.basic_ack(delivery_tag=method.delivery_tag)

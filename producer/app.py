@@ -11,7 +11,7 @@ mydb = mysql.connector.connect(
 )
 c = mydb.cursor()
 def create_table():
-    c.execute('CREATE TABLE STUDENTS_DETAILS(name VARCHAR(50), SRN VARCHAR(15), section VARCHAR(1));')
+    c.execute(' CREATE TABLE STOCK_ITEMS (ProductID INT PRIMARY KEY AUTO_INCREMENT, ProductName VARCHAR(100), Category VARCHAR(50), Quantity INT, UnitPrice DECIMAL(10, 2));')
 # create_table()
 
 app = Flask(__name__)
@@ -53,10 +53,11 @@ def health_check():
 
 @app.route('/insert_record', methods=['GET'])
 def insert_record():
-    srn = request.args.get('srn')
+    id = request.args.get('id')
     name = request.args.get('name')
-    section = request.args.get('section')
-    info = {"name":str(name), "section":str(section), "srn":str(srn)}
+    quantity = request.args.get('quantity')
+    price = request.args.get('price')
+    info = {"id":str(id), "name":str(name), "quantity":str(quantity), "price":str(price)}
     channel.basic_publish(exchange='insertion', routing_key='insertion_queue', body=json.dumps(info))
     return "Added to insertion queue"
 
@@ -67,7 +68,7 @@ def read_data():
     method_frame, _, body = channel.basic_get(queue='read_queue_response', auto_ack=True)
     # channel.basic_ack(delivery_tag=method_frame.delivery_tag)
     if method_frame:
-        columns = ["Name", "SRN", "Section"]
+        columns = ["Product ID", "Product Name", "Product Quantity", "Product Price"]
         data = json.loads(body)
         return render_template("view_records.html", records=data, colnames=columns)
     else:
@@ -75,8 +76,8 @@ def read_data():
 
 @app.route('/delete_record', methods=['GET'])
 def delete_record():
-    srn = request.args.get('srn')
-    channel.basic_publish(exchange='deletion', routing_key='deletion_queue', body=srn)
+    id = request.args.get('id')
+    channel.basic_publish(exchange='deletion', routing_key='deletion_queue', body=id)
     return "Added to deletion queue"
 
 if __name__ == "__main__":
