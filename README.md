@@ -1,24 +1,30 @@
-
 # Microservice communication with RabbitMQ
 
-## Introduction
+## Description
 
-The microservice architecture is one of the most popular forms of deployment, especially in larger organizations where there are multiple components that can be loosely coupled together. Not only does this make it easier to work on separate components independently, but ensures that issues in one component do not bring down the rest of the service. A microservices architecture consists of a collection of small, autonomous services where each service is self-contained and should implement a single business capability within a bounded context. This also comes with the advantage that a single system can scale thereby limiting the resources to required components. For example, during a shopping sale, the cart and payment microservices might need more resources than the login microservice. 
+The inventory management system aims to efficiently manage inventory items, track stock levels, and handle orders through a microservices architecture. The system will utilize RabbitMQ for inter-service communication and Docker for containerisation, ensuring scalability, modularity, and ease of deployment.
 
-RabbitMQ is a message-queueing software also known as a message broker or queue manager. Simply said; it is software where queues are defined, to which applications connect in order to transfer a message or messages.
+## Tech Stack Used
 
-## Prerequisites
+- Docker Windows
+- Rabbitmq Docker image
+- Python and Flask
+- Postman and HTML
+- MySQL
 
-- Docker ( Windows | Ubuntu | MacOS )
-- Rabbitmq Docker image (Documentation for [rabbitMQ](https://www.rabbitmq.com/getstarted.html))
-- Any language of choice (Python is recommended)
-- Postman (cURL can be used if not postman)
-- Any DataBase of choice (MongoDB/SQL preferably)
-(Note : Using Linux is preferred)
+## Objectives
 
-## Problem Statement
+1. Scalable Architecture: Design a microservices architecture that allows independent development, deployment, and scaling of each component.
+2. Robust Communication: Implement communication between microservices using RabbitMQ queues to ensure reliable message passing.
+3. Functional Microservices: Develop microservices to handle specific tasks such as health checks, item creation, stock management, and order processing.
+4. Database Integration: Integrate a database service to store inventory data and ensure proper CRUD operations.
+5. Containerization: Containerize the application using Docker to provide consistency and portability across different environments.
+6. Testing and Documentation: Conduct thorough testing to ensure the system functions as expected and provide comprehensive documentation for setup, usage, and maintenance.
 
-Building and deploying a microservices architecture where multiple components communicate with each other using RabbitMQ. A message broker is an architectural pattern for message validation, transformation and routing. For the scope of this project, we will build 4 microservices: A HTTP server that handles incoming requests to perform CRUD operations on a Student Management Database + Check the health of the RabbitMQ connection, a microservice that acts as the health check endpoint, a microservice that inserts a single student record, a microservice that retrieves student records, a microservice that deletes a student record given the SRN.
+## Flow Diagram
+
+![image](https://github.com/AnshulRanjan2004/PES1UG21CS096_105_119_123_Microservices-communication_-with_RabbitMQ/assets/91585064/478a8f18-2555-464f-a59c-627e66731732)
+
 
 ## File Structure 
 
@@ -117,3 +123,11 @@ Hint: The docker-compose file which spins up the producer and consumers ensures 
     - Send a GET request to the server with the appropriate path 
     - Check the content of the DB
   - To end the process, use the command “docker-compose down”
+
+## Explore more!
+
+- https://www.linode.com/docs/guides/deploying-microservices-with-docker/
+- https://www.cloudamqp.com/blog/part4-rabbitmq-for-beginners-exchanges-routing-keys-bindings.html
+- https://www.meritdata-tech.com/resources/whitepaper/digital-engineering-solutions/microservices-architecture-docker-kubernetes/
+- https://www.freecodecamp.org/news/docker-development-workflow-a-guide-with-flask-and-postgres-db1a1843044a/
+- https://www.educative.io/blog/mongodb-with-docker
