@@ -1,12 +1,9 @@
 import pika
 import mysql.connector
 import json
-import os
-
-source_ip = os.getenv('SOURCE_IP')
 
 credentials = pika.PlainCredentials('guest', 'guest')
-connection = pika.BlockingConnection(pika.ConnectionParameters(source_ip, 5672, '/', credentials))
+connection = pika.BlockingConnection(pika.ConnectionParameters('192.168.0.126', 5672, '/', credentials))
 
 channel = connection.channel()
 channel.exchange_declare(exchange='health', exchange_type='direct')
@@ -14,10 +11,10 @@ channel.queue_declare(queue='health_check')
 channel.queue_bind(exchange='health', queue='health_check')
 
 mydb = mysql.connector.connect(
-    host="mysql_container",
+    host="192.168.0.126",
     user="root",
     database="student_project",
-    password="2002"
+    password="password"
 )
 c = mydb.cursor()
 

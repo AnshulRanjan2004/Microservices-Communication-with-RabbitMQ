@@ -1,5 +1,9 @@
 version: '3'
 
+networks:
+  app_network:
+    external: true
+
 services:
   producer:
     build:
@@ -8,60 +12,31 @@ services:
     container_name: producer
     ports:
       - "5000:5000"
-    networks:
-      - app_network
-    environment:
-      - SOURCE_IP=192.168.56.1
 
   consumer1:
     build:
       context: ./consumer1
       dockerfile: Dockerfile
     container_name: consumer1
-    networks:
-      - app_network
-    environment:
-      - SOURCE_IP=192.168.56.1
+    
     
   consumer2:
     build:
       context: ./consumer2
       dockerfile: Dockerfile
     container_name: consumer2
-    networks:
-      - app_network
-    environment:
-      - SOURCE_IP=192.168.56.1
     
   consumer3:
     build:
       context: ./consumer3
       dockerfile: Dockerfile
     container_name: consumer3
-    networks:
-      - app_network
-    environment:
-      - SOURCE_IP=192.168.56.1
+    
 
   consumer4:
     build:
       context: ./consumer4
       dockerfile: Dockerfile
     container_name: consumer4
-    networks:
-      - app_network
-    environment:
-      - SOURCE_IP=192.168.56.1
-
-  alpine:
-    image: alpine:latest
-    container_name: alpine_container
-    tty: true
-    networks:
-      - app_network
-    environment:
-      - SOURCE_IP=192.168.56.1
-
-networks:
-  app_network:
-    external: true
+    
+    

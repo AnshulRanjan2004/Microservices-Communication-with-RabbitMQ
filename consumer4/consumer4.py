@@ -1,12 +1,9 @@
 import pika
 import mysql.connector
 import json
-import os
-
-source_ip = os.getenv('SOURCE_IP')
 
 credentials = pika.PlainCredentials('guest', 'guest')
-connection = pika.BlockingConnection(pika.ConnectionParameters(source_ip, 5672, '/', credentials))
+connection = pika.BlockingConnection(pika.ConnectionParameters('192.168.0.126', 5672, '/', credentials))
 
 channel = connection.channel()
 channel.exchange_declare(exchange='read', exchange_type='direct')
@@ -19,15 +16,15 @@ channel.queue_bind(exchange='read_response', queue='read_queue_response')
 
 
 mydb = mysql.connector.connect(
-    host="mysql_container",
+    host="192.168.0.126",
     user="root",
     database="student_project",
-    password="2002"
+    password="password"
 )
 def callback(ch, method, properties, body):
     print("Received message for reading record.")
     c = mydb.cursor()
-    c.execute("SELECT * FROM INVENTORY_MANAGEMENT")
+    c.execute("SELECT * FROM STUDENTS_DETAILS")
     records = c.fetchall()
     print(json.dumps(records))
     mydb.commit()
@@ -40,3 +37,6 @@ channel.basic_consume(queue='read_queue', on_message_callback=callback)
 print('Waiting for messages.')
 
 channel.start_consuming()
+
+
+
