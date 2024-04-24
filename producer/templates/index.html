@@ -1,146 +1,169 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<title>Stock Management System</title>
-		<style>
-		html, body {
-			height: 100%;
-						  }
-		  
-		  body {
-			  
-			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-			/* background-color: #f4f4f4; */
-			  background: linear-gradient(120deg, #ddf4fb 0%, #b8d9eb 100%);
-			margin: 0;
-			padding: 0;
-		  }
-		  
-		  h1, h2 {
-			color: #555;
-			margin-top: 30px;
-			margin-bottom: 20px;
-			text-align: center;
-		  }
-		  
-		  form {
-			/* background-image: url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTHmoP367n-0CjFufacClMOS_0ZSP5bwFTPBc7sjHJ1YoYcuXq9T8ye1WgVNHP85t3CeE&usqp=CAU"); */
-			  background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-			background-size: cover;
-			background-position: center;
-			background-repeat: no-repeat;
-			border-radius: 10px;
-			box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-			display: flex;
-			flex-direction: column;
-			margin: 40px auto;
-			max-width: 500px;
-			padding: 40px;
-		  }
-		  
-		  label {
-			display: block;
-			margin-bottom: 5px;
-			color: #555;
-			font-weight: bold;
-		  }
-		  
-		  input[type="text"] {
-			display: block;
-			width: 100%;
-			padding: 10px;
-			border: none;
-			border-bottom: 2px solid #ccc;
-			margin-bottom: 20px;
-			font-size: 16px;
-			background-color: transparent;
-		  }
-		  
-		  input[type="submit"] {
-			background-color: #4CAF50;
-			color: #fff;
-			padding: 10px 20px;
-			border: none;
-			border-radius: 5px;
-			cursor: pointer;
-			font-size: 16px;
-			transition: background-color 0.3s ease-in-out;
-		  }
-		  
-		  input[type="submit"]:hover {
-			background-color: #2E8B57;
-			transition: background-color 0.3s ease-in-out;
-		  }
-		  
-		  input[type="submit"]:focus {
-			outline: none;
-		  }
-		  
-		  input[type="submit"]:active {
-			background-color: #145A32;
-			transition: background-color 0.3s ease-in-out;
-		  }
-		  
-		  /* New styles for the form */
-		  form h2 {
-			color: #4CAF50;
-			font-size: 28px;
-			margin-top: 40px;
-		  }
-		  
-		  form label.error {
-			color: #ff0000;
-			font-size: 14px;
-			margin-top: 10px;
-		  }
-		  
-		  form input[type="text"]:hover, form input[type="text"]:focus {
-			border-bottom: 2px solid #4CAF50;
-		  }
-		  
-		  form input[type="submit"] {
-			display: block;
-			margin: 20px auto 0;
-			transition: transform 0.3s ease-in-out;
-		  }
-		  
-		  form input[type="submit"]:hover {
-			transform: translateY(-5px);
-			box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-			transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-		  }
-				  </style>
-	</head>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Management System</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            font-size: 42px;
+            color: #de941e;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .left-column {
+            grid-column: 1 / 2;
+        }
+
+        .right-column {
+            grid-column: 2 / 3;
+        }
+
+        form {
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #d8a31c;
+            font-size: 28px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background: #f9f9f9;
+            color: #333;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            background: #de941e;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-weight: bold;
+        }
+
+        input[type="submit"]:hover {
+            background: #1bd8c8;
+        }
+
+        input[type="submit"]:focus {
+            outline: none;
+        }
+
+        /* Additional styling for message input */
+        #message {
+            margin-bottom: 20px;
+        }
+
+        /* Styling for a bold and modern look */
+        body {
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        h1, h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            color: #de941e;
+        }
+
+        label {
+            color: #333;
+        }
+
+        input[type="text"], input[type="submit"] {
+            background: #fff;
+            border: 1px solid #de941e;
+            color: #333;
+        }
+
+        input[type="text"]:focus {
+            border-color: #de941e;
+        }
+    </style>
+</head>
 <body>
-	<h1>Stock Management System</h1>
-	<h2>Add New Product</h2>
-	<form method="GET" action="http://localhost:5000/insert_record">
-		<label for="id">Product ID:</label><br>
-		<input type="text" id="id" name="id" required><br>
-		<label for="name">Product Name:</label><br>
-		<input type="text" id="name" name="name" required><br>
-		<label for="quantity">Product Quantity:</label><br>
-		<input type="text" id="quantity" name="quantity" required><br>
-		<label for="price">Product Price:</label><br>
-		<input type="text" id="price" name="price" required><br>
-		<br>
-		<input type="submit" value="Submit">
-	</form>
-	<h2>Delete Product</h2>
-	<form method="GET" action="http://localhost:5000/delete_record">
-		<label for="id">Product ID:</label><br>
-		<input type="text" id="id" name="id" required><br>
-		<br>
-		<input type="submit" value="Delete">
-	</form>
-	<h2>View All Products</h2>
-	<form method="GET" action="http://localhost:5000/read_data">
-		<input type="submit" value="View All Students">
-	</form>
-    <h2>Check Health of Connections</h2>
-	<form method="GET" action="http://localhost:5000/health_check">
-        <input type="text" id="message" name="message" required><br>
-		<input type="submit" value="Check health">
-	</form>
+<h1>Stock Management System</h1>
+<div class="container">
+    <div class="left-column">
+        <h2>Add New Product</h2>
+        <form method="GET" action="http://localhost:5000/insert_record">
+            <label for="id">Product ID:</label>
+            <input type="text" id="id" name="id" required>
+            <label for="name">Product Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="quantity">Product Quantity:</label>
+            <input type="text" id="quantity" name="quantity" required>
+            <label for="price">Product Price:</label>
+            <input type="text" id="price" name="price" required>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <div class="right-column">
+        <div>
+            <h2>Delete Product</h2>
+            <form method="GET" action="http://localhost:5000/delete_record">
+                <label for="id">Product ID:</label>
+                <input type="text" id="id" name="id" required>
+                <input type="submit" value="Delete">
+            </form>
+        </div>
+        <div>
+            <h2>View All Products</h2>
+            <form method="GET" action="http://localhost:5000/read_data">
+                <input type="submit" value="View All Products">
+            </form>
+        </div>
+        <div>
+            <h2>Check Health of Connections</h2>
+            <form method="GET" action="http://localhost:5000/health_check">
+                <input type="text" id="message" name="message" placeholder="Enter message" required>
+                <input type="submit" value="Check Health">
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

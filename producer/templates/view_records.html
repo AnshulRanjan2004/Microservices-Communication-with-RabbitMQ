@@ -1,82 +1,90 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Stock Management Using Rabbit MQ</title>
-  <style>
-		.container {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			height: 100vh;
-		}
+    <title>Stock Management Using Rabbit MQ</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
 
-		table {
-		  width: 100%;
-		  border-collapse: collapse;
-		  margin: 20px 0;
-		}
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column; /* Added to align elements vertically */
+        }
 
-		thead {
-		  background-color: #333;
-		  color: #fff;
-		}
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: bold;
+            color: #de941e;
+            margin-bottom: 20px;
+        }
 
-		th, td {
-		  padding: 10px;
-		  text-align: center;
-		}
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            border: 2px solid #000; /* Changed border to bolder black */
+            border-radius: 5px;
+        }
 
-		th {
-		  text-transform: uppercase;
-		}
+        thead {
+            background-color: #de941e;
+            color: #fff;
+        }
 
-		tr:nth-child(even) {
-		  background-color: #f2f2f2;
-		}
+        th, td {
+            padding: 10px;
+            text-align: center;
+            font-weight: bold; /* Added font-weight: bold */
+        }
 
-		tr:hover {
-		  background-color: #ddd;
-		}
+        th {
+            text-transform: uppercase;
+        }
 
-		td:nth-child(1) {
-		  font-weight: bold;
-		}
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
 
-		td:nth-child(2) {
-		  text-transform: uppercase;
-		}
+        tr:hover {
+            background-color: #ddd;
+        }
 
-		td:nth-child(3) {
-		  font-style: italic;
-		}
+        td:nth-child(2) {
+            text-transform: uppercase;
+        }
 
-		/* Optional: add a border around the table */
-		table {
-		  border: 1px solid #ccc;
-		  border-radius: 5px;
-		}
-	</style>
+        td:nth-child(3) {
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
-	<div class="container">
-
-	
-	<table border="1">
+<div class="container">
+    <h1>All Products</h1>
+    <table border="1">
         <thead>
-            <tr>
-                {% for col in colnames %}
-                <th> {{ col }} </th>
-                {% endfor %}
-            </tr>
+        <tr>
+            {% for col in colnames %}
+            <th> {{ col }} </th>
+            {% endfor %}
+        </tr>
         </thead>
         <tbody>
-            {% for record in records %}
-            <tr>
-                {% for item in record %}
-                <td>{{ item }}</td>
-                {% endfor %}
-            </tr>
+        {% for record in records %}
+        <tr>
+            {% for item in record %}
+            <td>{{ item }}</td>
             {% endfor %}
+        </tr>
+        {% endfor %}
         </tbody>
     </table>
 </div>
