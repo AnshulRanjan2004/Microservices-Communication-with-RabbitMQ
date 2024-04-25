@@ -3,7 +3,7 @@ import mysql.connector
 import json
 
 credentials = pika.PlainCredentials('guest', 'guest')
-connection = pika.BlockingConnection(pika.ConnectionParameters('192.168.0.104', 5672, '/', credentials))
+connection = pika.BlockingConnection(pika.ConnectionParameters('192.168.180.2', 5672, '/', credentials))
 
 channel = connection.channel()
 channel.exchange_declare(exchange='health', exchange_type='direct')
@@ -11,7 +11,7 @@ channel.queue_declare(queue='health_check')
 channel.queue_bind(exchange='health', queue='health_check')
 
 mydb = mysql.connector.connect(
-    host="192.168.0.104",
+    host="192.168.180.2",
     user="root",
     database="student_records",
     password="password"

@@ -4,7 +4,7 @@ import pika
 import json
 
 mydb = mysql.connector.connect(
-    host="192.168.0.104",
+    host="192.168.180.2",
     user="root",
     database="student_records",
     password="password"
@@ -17,7 +17,7 @@ def create_table():
 app = Flask(__name__)
 
 credentials = pika.PlainCredentials('guest', 'guest')
-connection = pika.BlockingConnection(pika.ConnectionParameters('192.168.0.104', 5672, '/', credentials))
+connection = pika.BlockingConnection(pika.ConnectionParameters('192.168.180.2', 5672, '/', credentials))
 channel = connection.channel()
 
 channel.exchange_declare(exchange='insertion', exchange_type='direct')
