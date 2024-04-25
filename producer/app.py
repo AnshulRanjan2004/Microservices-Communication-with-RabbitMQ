@@ -11,7 +11,7 @@ mydb = mysql.connector.connect(
 )
 c = mydb.cursor()
 def create_table():
-    c.execute(' CREATE TABLE STOCK_ITEMS (ProductID INT PRIMARY KEY AUTO_INCREMENT, ProductName VARCHAR(100), Category VARCHAR(50), Quantity INT, UnitPrice DECIMAL(10, 2));')
+    c.execute('CREATE TABLE STOCK_ITEMS (ProductID INT PRIMARY KEY AUTO_INCREMENT, ProductName VARCHAR(100), Quantity INT, UnitPrice VARCHAR(10));')
 # create_table()
 
 app = Flask(__name__)
